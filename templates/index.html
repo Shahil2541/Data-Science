@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Impact Prediction | Job Market Analysis</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1><B>AI Impact On Jobs Prediction Portal</B></h1>
+      <p class="subtitle">Predict how artificial intelligence will affect different job roles and industries</p>
+    </header>
+
+    <div class="main-content">
+      <!-- Model Evaluation Section -->
+      <section class="card metrics">
+        <h2><B>Model Evaluation Metrics</B></h2>
+        <div class="metrics-grid">
+          <div class="metric">
+            <div class="metric-value">{{ r2 }}</div>
+            <div class="metric-label">R² Score</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">{{ rmse }}</div>
+            <div class="metric-label">RMSE</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">{{ pearson }}</div>
+            <div class="metric-label">Pearson Correlation</div>
+          </div>
+        </div>
+        <p><strong>High Accuracy:</strong> Our model demonstrates strong predictive power with excellent correlation metrics.</p>
+        <p><strong>High Pearson correlation:</strong>The high Pearson correlation coefficient of {{ pearson }} confirms our model's strong ability to capture and predict real-world AI impact patterns.</p>
+      </section>
+
+      <!-- Feature Importances Section -->
+      <section class="card features">
+        <h2><B>Key Predictive Features</B></h2>
+        <table class="features-table">
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th>Importance</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for feat, val in features.items() %}
+            <tr>
+              <td>{{ feat.replace('_', ' ') }}</td>
+              <td>
+                {{ '%.3f'|format(val) }}
+                <!-- <div class="feature-bar" style="width: {{ val * 100 }}%"></div> -->
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </section>
+    </div>
+
+    <!-- Prediction Form Section -->
+    <section class="card predict">
+      <h2><B>Make a Prediction</B></h2>
+      <p>Enter the characteristics of a job role to predict its AI impact probability (In fraction (eg: 15% = 0.15)):</p>
+      
+      <form id="predictForm" class="predict-form">
+        <div class="form-grid">
+          {% for feat in features.keys() %}
+          <div class="form-group">
+            <label for="{{ feat }}">{{ feat.replace('_', ' ') }}:</label>
+            <input 
+              type="number" 
+              step="any" 
+              id="{{ feat }}" 
+              name="{{ feat }}" 
+              required
+              min="0"
+              max="100"
+              placeholder="Enter value">
+          </div>
+          {% endfor %}
+        </div>
+        
+        <div class="loading" id="loading">
+          <div class="spinner"></div>
+          <p>Analyzing impact... This may take a few seconds.</p>
+        </div>
+        
+        <button type="submit" class="predict-btn" id="predictBtn">
+          Predict AI Impact
+        </button>
+      </form>
+      
+      <div class="result" id="result">
+        <!-- Result will be inserted here by JavaScript -->
+      </div>
+    </section>
+
+    <footer>
+      <p>© 2025 AI Impact Prediction Portal | Built with Machine Learning</p>
+    </footer>
+  </div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
