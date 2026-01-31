@@ -44,7 +44,8 @@
     </script>
 
     <!-- Custom Styles -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="static/style.css">
 
     <!-- Icons (Lucide) -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -188,7 +189,7 @@
                             </div>
                         </div>
                         <div class="flex items-baseline gap-2">
-                            <h3 class="text-3xl font-bold text-brand-900">{{ r2 }}</h3>
+                            <h3 id="r2-score" class="text-3xl font-bold text-brand-900">-</h3>
                             <span class="text-sm font-medium text-emerald-600">+2.4%</span>
                         </div>
                     </div>
@@ -203,7 +204,7 @@
                             </div>
                         </div>
                         <div class="flex items-baseline gap-2">
-                            <h3 class="text-3xl font-bold text-brand-900">{{ rmse }}</h3>
+                            <h3 id="rmse-score" class="text-3xl font-bold text-brand-900">-</h3>
                             <span class="text-sm font-medium text-slate-400">Stable</span>
                         </div>
                     </div>
@@ -219,7 +220,7 @@
                             </div>
                         </div>
                         <div class="flex items-baseline gap-2">
-                            <h3 class="text-3xl font-bold text-brand-900">{{ pearson }}</h3>
+                            <h3 id="pearson-score" class="text-3xl font-bold text-brand-900">-</h3>
                             <span class="text-sm font-medium text-purple-600">Strong</span>
                         </div>
                     </div>
@@ -242,18 +243,12 @@
                             </div>
 
                             <form id="predictForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                {% for feat in features.keys() %}
-                                <div class="col-span-1 group">
-                                    <label for="{{ feat }}"
-                                        class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2 group-focus-within:text-accent-600 transition-colors">
-                                        {{ feat.replace('_', ' ') }}
-                                    </label>
-                                    <input type="number" step="any" id="{{ feat }}" name="{{ feat }}" required min="0"
-                                        max="100"
-                                        class="w-full bg-slate-50 border border-slate-200 text-brand-900 font-medium rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-accent-500/20 focus:border-accent-500 transition-all placeholder:text-slate-400"
-                                        placeholder="0">
+                                <div id="featuresContainer" class="contents">
+                                    <!-- Features will be populated by JS -->
+                                    <div class="col-span-1 md:col-span-2 text-center text-slate-500 py-8">
+                                        <div class="animate-pulse">Loading prediction parameters...</div>
+                                    </div>
                                 </div>
-                                {% endfor %}
 
                                 <div class="col-span-1 md:col-span-2 mt-4">
                                     <button type="submit" id="predictBtn"
@@ -372,18 +367,18 @@
                             Key Drivers
                         </h3>
                         <div class="space-y-4">
-                            {% for feat, val in features.items() %}
-                            <div class="relative">
-                                <div class="flex justify-between text-sm font-medium mb-1">
-                                    <span class="text-slate-700">{{ feat.replace('_', ' ') }}</span>
-                                    <span class="text-slate-900">{{ '%.1f'|format(val * 100) }}%</span>
-                                </div>
-                                <div class="w-full bg-slate-100 rounded-full h-2.5">
-                                    <div class="bg-gradient-to-r from-accent-500 to-tech-500 h-2.5 rounded-full width-target"
-                                        data-width="{{ '%.1f'|format(val * 100) }}%"></div>
+                            <!-- Feature Importance List populated by JS -->
+                            <div id="featureImportanceList" class="space-y-4">
+                                <div class="animate-pulse flex space-x-4">
+                                    <div class="flex-1 space-y-4 py-1">
+                                        <div class="h-4 bg-slate-200 rounded w-3/4"></div>
+                                        <div class="space-y-2">
+                                            <div class="h-4 bg-slate-200 rounded"></div>
+                                            <div class="h-4 bg-slate-200 rounded w-5/6"></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            {% endfor %}
                         </div>
 
                         <!-- EXPLANATION CARD -->
@@ -613,17 +608,20 @@
                             </h4>
                             <div class="space-y-4">
                                 <div>
-                                    <p class="text-xs font-bold text-slate-400 uppercase">R2 Score ({{ r2 }})</p>
+                                    <p class="text-xs font-bold text-slate-400 uppercase">R2 Score (<span
+                                            id="r2-score-sidebar">-</span>)</p>
                                     <p class="text-sm text-slate-600">Indicates how well the model explains the variance
                                         in the data. Higher is better (closer to 1.0).</p>
                                 </div>
                                 <div>
-                                    <p class="text-xs font-bold text-slate-400 uppercase">RMSE ({{ rmse }})</p>
+                                    <p class="text-xs font-bold text-slate-400 uppercase">RMSE (<span
+                                            id="rmse-score-sidebar">-</span>)</p>
                                     <p class="text-sm text-slate-600">Root Mean Square Error. The average deviation of
                                         predictions from actual values. Lower is better.</p>
                                 </div>
                                 <div>
-                                    <p class="text-xs font-bold text-slate-400 uppercase">Pearson ({{ pearson }})</p>
+                                    <p class="text-xs font-bold text-slate-400 uppercase">Pearson (<span
+                                            id="pearson-score-sidebar">-</span>)</p>
                                     <p class="text-sm text-slate-600">Measures the linear correlation between predicted
                                         and actual values. 1.0 is a perfect positive correlation.</p>
                                 </div>
@@ -694,7 +692,7 @@
     <script>
         lucide.createIcons();
     </script>
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="static/script.js"></script>
 </body>
 
 </html>

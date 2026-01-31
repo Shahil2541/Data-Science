@@ -5,3 +5,5 @@ scikit-learn
 scipy
 nltk
 openpyxl
+flask-cors
+gunicorn
