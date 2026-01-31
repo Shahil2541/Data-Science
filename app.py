@@ -60,7 +60,11 @@ def predict():
                 input_df[col] = 0  # or appropriate default value
         
         input_df = input_df[X.columns]  # reorder columns to match training data
+        
         prediction = rf_model.predict(input_df)[0]
+        
+        # Convert fraction to percentage (0.5 -> 50)
+        prediction = prediction * 100
         
         # Ensure prediction is within reasonable bounds
         prediction = max(0, min(100, prediction))

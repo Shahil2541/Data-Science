@@ -36,7 +36,7 @@ r2 = r2_score(y_test, y_pred)
 rmse = np.sqrt(mean_squared_error(y_test, y_pred))
 pearson_corr, _ = pearsonr(y_test, y_pred)
 
-print("✅ Random Forest Regressor Results:")
+print(" Random Forest Regressor Results:")
 print(f"R² Score             : {r2:.3f}")
 print(f"RMSE                 : {rmse:.3f}")
 print(f"Pearson Correlation  : {pearson_corr:.3f}")

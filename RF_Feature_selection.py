@@ -8,7 +8,7 @@ from sklearn.preprocessing import LabelEncoder
 file_path = "AI-Impacts-on-Jobs-Feature-Engineered.xlsx"
 df = pd.read_excel(file_path)
 
-print("✅ Dataset Loaded")
+print("Dataset Loaded")
 print("Dataset Shape:", df.shape)
 print(df.head())
 
@@ -16,7 +16,7 @@ print(df.head())
 target_column = "ai_impact"  
 
 if target_column not in df.columns:
-    raise ValueError(f"❌ Target column '{target_column}' not found in dataset!")
+    raise ValueError(f" Target column '{target_column}' not found in dataset!")
 
 # Separate features (X) and target (y)
 X = df.drop(columns=[target_column])
@@ -26,7 +26,7 @@ y = df[target_column]
 if y.dtype == 'object':
     le = LabelEncoder()
     y = le.fit_transform(y)
-    print("✅ Target column encoded.")
+    print(" Target column encoded.")
 
 # 5. Keep Only Numeric Features
 X_numeric = X.select_dtypes(include=['int64', 'float64'])
@@ -35,7 +35,7 @@ X_numeric = X.select_dtypes(include=['int64', 'float64'])
 X_numeric = X_numeric.replace([np.inf, -np.inf], np.nan)
 X_numeric = X_numeric.fillna(X_numeric.mean())
 
-print("✅ Numeric Features Shape:", X_numeric.shape)
+print(" Numeric Features Shape:", X_numeric.shape)
 
 # 6. Train RandomForest for Feature Importance
 # Choose classifier or regressor based on target type
@@ -56,7 +56,7 @@ importance_df = pd.DataFrame({
     'Importance': importances
 }).sort_values(by='Importance', ascending=False)
 
-print("\n🔎 Feature Importances:")
+print("\n Feature Importances:")
 print(importance_df)
 
 # 7. Select Top Features (Dimension Reduction)
@@ -65,7 +65,7 @@ selector = SelectFromModel(rf, threshold="median", prefit=True)  # keep features
 X_reduced = selector.transform(X_numeric)
 
 selected_features = feature_names[selector.get_support()]
-print("\n✅ Selected Features for Reduced Dataset:")
+print("\n Selected Features for Reduced Dataset:")
 print(selected_features.tolist())
 
 print(f"\nOriginal shape: {X_numeric.shape}")
@@ -78,4 +78,4 @@ df_reduced = pd.DataFrame(X_reduced, columns=selected_features)
 df_reduced[target_column] = y
 
 df_reduced.to_excel("Reduced_Dataset_RF.xlsx", index=False)
-print("\n💾 Reduced dataset saved as 'Reduced_Dataset_RF.xlsx'")
+print("\n Reduced dataset saved as 'Reduced_Dataset_RF.xlsx'")
