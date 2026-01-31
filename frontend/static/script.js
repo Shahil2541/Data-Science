@@ -1,5 +1,5 @@
 // Configuration
-const BACKEND_URL = 'http://127.0.0.1:5000'; // Placeholder: Update this with Render URL after deployment
+const BACKEND_URL = 'https://data-science-munt.onrender.com'; // Placeholder: Update this with Render URL after deployment
 
 // --- INITIAL DATA FETCH ---
 async function fetchStats() {
